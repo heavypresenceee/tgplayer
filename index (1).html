@@ -607,6 +607,17 @@ document.addEventListener("keydown", e => {
   if (e.code === "ArrowRight")  { e.preventDefault(); doAction("next"); }
   if (e.code === "ArrowLeft")   { e.preventDefault(); doAction("prev"); }
 });
+async function search() {
+  const query = document.getElementById("search-input").value.trim();
+  if(!query) return;
+  try {
+    const r = await fetch(`${API_URL}/api/search?q=${encodeURIComponent(query)}&source=${searchSource}`, { headers: HEADERS });
+    const data = await r.json();
+    renderTrackList(data.tracks, document.getElementById("search-results"), true);
+  } catch(e) {
+    console.error("Ошибка поиска:", e);
+  }
+}
 </script>
 </body>
 </html>
